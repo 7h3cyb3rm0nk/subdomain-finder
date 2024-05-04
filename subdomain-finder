@@ -2,9 +2,9 @@
 
 
 extract_subdomains() {
-awk -F: '/common_name/ { for(i=1 ; i <= NF; ++i) if (match($i, "common_name") != 0) print $(i+1) }' |\
+  awk -F: '/common_name/ { for(i=1 ; i <= NF; ++i) if (match($i, "common_name") != 0 && $(i+1) !~ /^"\*/) print $(i+1) }' |\
 cut -d "," -f1 |\
-sed 's/"/ /g' 
+sed 's/"/ /g' | sort | uniq
 }
 
 get_subdomains() {
