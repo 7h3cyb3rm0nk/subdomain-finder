@@ -6,13 +6,16 @@ if [ $# -ne 1 ]; then
 fi
 
 extract_subdomain() {
-  awk -F: '/common_name/ { for(i=1 ; i <= NF; ++i) if (match($i, "common_name") != 0 && $(i+1) !~ /^"\*/) print $(i+1) }' |\
-cut -d "," -f1 |\
-sed 's/"/ /g' | sort | uniq
+  awk -F: ' { for(i=1 ; i <= NF; ++i) if ($i ~ /name_value/  && $(i+1) !~ /^"\*/) print $(i+1) }' |\
+  cut -d "," -f1 |\
+  sed 's/"/ /g' |\
+  sort | uniq  |\
+  sed 's/\\n/\n/g' 
 }
 
 get_subdomains() {
-curl https://crt.sh/?q=$1\&output=json | extract_subdomains
+curl https://crt.sh/?q=$1\&output=json | extract_subdomain
 }
 
-get_subdomains $1 
+get_subdomains $1
+
