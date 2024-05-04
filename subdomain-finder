@@ -6,11 +6,13 @@ if [ $# -ne 1 ]; then
 fi
 
 extract_subdomain() {
-  awk -F: ' { for(i=1 ; i <= NF; ++i) if ($i ~ /name_value/  && $(i+1) !~ /^"\*/) print $(i+1) }' |\
+  awk -F: ' { for(i=1 ; i <= NF; ++i) if ($i ~ /name_value/ ) print $(i+1) }' |\
   cut -d "," -f1 |\
-  sed 's/"/ /g' |\
-  sort | uniq  |\
-  sed 's/\\n/\n/g' 
+  sed 's/"//g' |\
+  sed 's/\\n/\n/g' |\
+  sed '/^*/d' |\
+  sort | uniq  
+
 }
 
 get_subdomains() {
