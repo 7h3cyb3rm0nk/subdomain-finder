@@ -2,5 +2,9 @@
 
 ## Usage instruction 
 
-`chmod +x subdomain-finder`
-`subdomain-finder <example.com>`
+```bash
+chmod +x subdomain-finder
+```
+```bash
+subdomain-finder <example.com>
+```
