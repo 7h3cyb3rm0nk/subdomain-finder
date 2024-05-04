@@ -1,0 +1,14 @@
+#!/bin/bash
+
+
+extract_subdomains() {
+awk -F: '/common_name/ { for(i=1 ; i <= NF; ++i) if (match($i, "common_name") != 0) print $(i+1) }' |\
+cut -d "," -f1 |\
+sed 's/"/ /g' 
+}
+
+get_subdomains() {
+curl https://crt.sh/?q=$1\&output=json | extract_subdomains
+}
+
+get_subdomains $1 
