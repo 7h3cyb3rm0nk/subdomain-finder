@@ -1,7 +1,11 @@
 #!/bin/bash
 
+if [ $# -ne 1 ]; then
+  echo "Usage: subdomain-finder <example.com"
+  exit 1
+fi
 
-extract_subdomains() {
+extract_subdomain() {
   awk -F: '/common_name/ { for(i=1 ; i <= NF; ++i) if (match($i, "common_name") != 0 && $(i+1) !~ /^"\*/) print $(i+1) }' |\
 cut -d "," -f1 |\
 sed 's/"/ /g' | sort | uniq
